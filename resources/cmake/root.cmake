@@ -16,3 +16,7 @@ endif()
 if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/sandblox-launcher)
     add_subdirectory(sandblox-launcher)
 endif()
+
+if(EXISTS ${CMAKE_CURRENT_LIST_DIR}/qub3d-renderer)
+   add_subdirectory(qub3d-renderer)
+endif()
