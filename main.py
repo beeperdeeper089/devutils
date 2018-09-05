@@ -35,7 +35,7 @@ if os.path.isdir(newDir + targetGitHubUsername):
 	raise Exception("User repository Directory already exists, you may have already cloned, pulling instead!")
 
 if gitAction == "clone":
-	repositoriesToClone = ["devutils"]
+	
 
 	repoWorker.clone(repositoriesToClone)
 
