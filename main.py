@@ -1,6 +1,8 @@
 import sys
 import os
 from lib.repositories.repoTools import RepoTools
+from lib.querying.query import QuestionUser
+
 
 if len(sys.argv) > 2:
 	targetGitHubUsername = sys.argv[2]
@@ -17,9 +19,7 @@ else:
 	raise Exception( "Invalid option, should be either 'clone' or 'pull'." )
 
 print ( "------------------ CONFIGURING ------------------" )
-print ( "Cloning from: " + targetGitHubUsername )
-
-print ( "The Current Scripts Working Directory is: " + os.path.dirname(os.path.realpath(__file__)) ) # Print out the file's working directory. 
+print ( "Cloning from: " + targetGitHubUsername + "\'s Repositories!")
 
 newDir = str( os.path.dirname( os.path.realpath(__file__) ) + "/../" )
 print ( "Destination: " + newDir ) # Get the new destination dir and print it out.
@@ -31,9 +31,14 @@ repoWorker = RepoTools(githubBaseUrl, targetGitHubUsername, newDir)
 
 print ( "------------------ STARTING ACTION: %s ------------------" % gitAction.upper() )
 
+if os.path.isdir(newDir + targetGitHubUsername):
+	raise Exception("User repository Directory already exists, you may have already cloned, pulling instead!")
 
-if gitAction == "clone" and targetGitHubUsername == "qub3d":
-	repositoriesToClone = ["qub3d-libdeps", "qub3d-engine", "qub3d-devdocs", "website", 
-	"sandblox-launcher", "sandblox-client", "sandblox-server", "sandblox-marketplace" ]
+if gitAction == "clone":
+	repositoriesToClone = ["devutils"]
 
 	repoWorker.clone(repositoriesToClone)
+
+questionCMake = "Would you like the respective CMake to be generated?"
+if QuestionUser.query(questionCMake, "yes"):
+	print("Generating CMake!")

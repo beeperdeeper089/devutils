@@ -10,5 +10,8 @@ class RepoTools(object):
 
     def clone(self, repoNames):
         os.chdir(self.repoWorkingDir)
+        os.mkdir(self.targetUser)
+        os.chdir(self.repoWorkingDir + "/" + self.targetUser)
+
         for repo in repoNames:
             os.system("git clone " + self.gitBaseUrl + self.targetUser + "/" + repo + ".git" + " " + repo)
