@@ -2,7 +2,7 @@ import sys
 import os
 from lib.repositories.repoTools import RepoTools
 from lib.querying.query import QuestionUser
-
+from lib.settings.settingsManager import Settings
 
 if len(sys.argv) > 2:
 	targetGitHubUsername = sys.argv[2]
@@ -21,7 +21,9 @@ else:
 print ( "------------------ CONFIGURING ------------------" )
 print ( "Cloning from: " + targetGitHubUsername + "\'s Repositories!")
 
-newDir = str( os.path.dirname( os.path.realpath(__file__) ) + "/../" )
+script_dir = str(os.path.dirname(os.path.realpath(__file__)))
+
+newDir = script_dir + "/../"
 print ( "Destination: " + newDir ) # Get the new destination dir and print it out.
 
 githubBaseUrl = "https://github.com/"
@@ -35,10 +37,11 @@ if os.path.isdir(newDir + targetGitHubUsername):
 	raise Exception("User repository Directory already exists, you may have already cloned, pulling instead!")
 
 if gitAction == "clone":
-	
+	repoConfig = Settings(script_dir + "/repoList.txt")
+	repoConfig.parseRepoList()
 
-	repoWorker.clone(repositoriesToClone)
+	repoWorker.clone(repoConfig.repoList)
 
-questionCMake = "Would you like the respective CMake to be generated?"
-if QuestionUser.query(questionCMake, "yes"):
-	print("Generating CMake!")
+# questionCMake = "Would you like the respective CMake to be generated?"
+# if QuestionUser.query(questionCMake, "yes"):
+# 	print("Generating CMake!")
